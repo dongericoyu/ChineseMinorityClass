@@ -3,7 +3,7 @@ library(sem)
 library(lavaan)
 library(qgraph)
 library(semPlot)
-
+library(psych)
 
 
 #example of SEM estimation in package lavaan
@@ -38,9 +38,18 @@ model <- '
   #want a greater P-value (counterintuitive)
   #want high r-square
 
+  #check any missing paths:
+  modindices(fit)
+  
+  #variance table
+  vartable(fit)
+  
   
   ##visaulize the path diagram
   semPaths(fit, "std", edge.label.cex = 0.5, curvePivot = T, layout = "tree")
+  
+  
+
   
   
   
