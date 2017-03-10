@@ -40,23 +40,7 @@ retro_UZ_China <- glm(retro_mobility_1 ~ job_class + edu_1 + income_quantile + a
 
 
 
-#plotting the  coefficients of models
-#non-groupped IVS
-retro_set1<-dwplot(list(retro_HM_China, retro_HU_China, retro_HZ_China, retro_UZ_China), dodge_soze = 1) +
-  relabel_y_axis(c("Occupation_class", "Education", "Income", 
-                   "Age", "Male", "CCP members", "Urban Hukou", "Local Hukou", "Han", 
-                   "Uyghur v.s. Han", "Zhuang v.s. Han", "Uyghur v.s. Zhuang")) +
-  theme_bw() + xlab("Coefficient Estimate") + ylab("") +
-  geom_vline(xintercept = 0, colour = "grey60", linetype = 2) +
-  ggtitle("Figure 1. Predicting Retrospective Mobility") +
-  theme(plot.title = element_text(face="bold"),
-        legend.justification=c(0, 0), legend.position=c(0, 0),
-        legend.background = element_rect(colour="grey80"),
-        legend.title = element_blank()) 
-
-retro_set1
-#save
-
+#plotting the  coefficients of model
 
 #groupped IVS 
 # Define order for predictors that can be grouped
@@ -111,3 +95,4 @@ retro_set1_gplot <- retro_set1_group %>% add_brackets(four_brackets)
 
 # to save to file (not run)
 grid.arrange(retro_set1_gplot)    # to display
+
