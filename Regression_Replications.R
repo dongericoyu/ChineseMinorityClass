@@ -17,6 +17,7 @@ library(dotwhisker)
 library(broom)
 library(dplyr)
 library(purrr)
+library(stargazer)
 
 #read data into R
 CLDS2014<- read_dta("C:/Users/Dong/Desktop/Ethnic Minority and Public Good-2016/individual_data_for_R.dta")
@@ -264,6 +265,85 @@ table3<-stargazer(retro_HU_XJ, prosp_HU_XJ, retro_HZ_GX, prosp_HZ_GX, title="Reg
                   covariate.labels=c("Occupation_class", "Education", "Income", 
                                      "Age", "Male", "CCP members", "Urban Hukou", "Local Hukou", 
                                      "Uyghur v.s. Han", "Xinjiang", "Zhuang v.s. Han", "Guangxi"),
+                  omit.stat=c("LL","ser","f"), no.space=TRUE)
+
+
+#basic model sets 4.Perception of Social Class
+
+#4(1)Han v.s. Uyghur - class
+class_HM <- glm(current_class_1 ~ job_class + edu_1 + income_quantile + age_1 + male_1 + ccp_1 + current_urban_hukou_1 + local_hukou_1 + Han, data = CLDS2014)
+#4(2)Han v.s. Uyghur - class
+class_HU <- glm(current_class_1 ~ job_class + edu_1 + income_quantile + age_1 + male_1 + ccp_1 + current_urban_hukou_1 + local_hukou_1 + Uyghur_Han, data = CLDS2014)
+
+
+#4(3)Han v.s. Zhuang - class
+class_HZ <- glm(current_class_1 ~ job_class + edu_1 + income_quantile + age_1 + male_1 + ccp_1 + current_urban_hukou_1 + local_hukou_1 + Zhuang_Han, data = CLDS2014)
+#4(4)Han v.s. Zhuang - class
+class_UZ <- glm(current_class_1 ~ job_class + edu_1 + income_quantile + age_1 + male_1 + ccp_1 + current_urban_hukou_1 + local_hukou_1 + Uyghur_Zhuang, data = CLDS2014)
+
+
+#plotting the  coefficients of model
+
+#groupped IVS 
+# Define order for predictors that can be grouped
+reordered_vars_set4<- c("job_class", "edu_1", "income_quantile", "age_1", "male_1", "ccp_1", "current_urban_hukou_1",
+                        "local_hukou_1", "Han", "Uyghur_Han", "Zhuang_Han", "Uyghur_Zhuang")
+
+
+# Generate a tidy data frame
+mset4_df <- rbind(tidy(class_HM) %>% mutate(model = "class_HM"),      # tidy results &
+                  tidy(class_HU) %>% mutate(model = "class_HU"),      # add a variable to
+                  tidy(class_HZ) %>% mutate(model = "class_HZ"),
+                  tidy(class_UZ) %>% mutate(model = "class_UZ")) %>%  # identify model.
+  by_2sd(mtcars) %>%                                        # rescale coefficients
+  mutate(term = factor(term, levels = reordered_vars_set4)) %>%  # make term a factor &
+  group_by(model) %>% arrange(term) %>%                     # reorder
+  relabel_predictors(c(job_class = "Occupation_class",                      # relabel predictors
+                       edu_1 = "Education", 
+                       income_quantile = "Income", 
+                       age_1 = "Age", 
+                       male_1 = "Male", 
+                       ccp_1 = "CCP members",
+                       current_urban_hukou_1 = "Urban Hukou",
+                       local_hukou_1 = "Local Hukou",
+                       Han = "Han", 
+                       Uyghur_Han = "Uyghur v.s. Han",
+                       Zhuang_Han = "Zhuang v.s. Han",
+                       Uyghur_Zhuang = "Uyghur v.s. Zhuang"))
+
+mset4_df
+
+
+# Save finalized plot to an object 
+class_set4_group<-dwplot(mset4_df, dodge_soze = 1) + 
+  relabel_y_axis(c("Occupation_class", "Education", "Income", 
+                   "Age", "Male", "CCP members", "Urban Hukou", "Local Hukou", "Han", 
+                   "Uyghur v.s. Han", "Zhuang v.s. Han", "Uyghur v.s. Zhuang")) +
+  theme_bw() + xlab("Coefficient Estimate") + ylab("") +
+  geom_vline(xintercept = 0, colour = "grey60", linetype = 2) +
+  ggtitle("Figure 4. Self-perception of Social Class") +
+  theme(plot.title = element_text(face="bold"),
+        legend.justification=c(0, 0),
+        legend.background = element_rect(colour="grey80"),
+        legend.title = element_blank()) 
+
+# Create list of brackets (label, topmost included predictor, bottommost included predictor)
+four_brackets <- list( c("SES", "Occupation_class", "Income"), 
+                       c("Demographics", "Age", "CCP members"),
+                       c("Hukou Status", "Urban Hukou", "Local Hukou"),
+                       c("Ethnicity", "Han", "Uyghur v.s. Zhuang"))
+
+class_set4_gplot <- class_set4_group %>% add_brackets(four_brackets)
+
+# to save to file (not run)
+grid.arrange(class_set4_gplot)    # to display
+
+#creating table
+table4<-stargazer(class_HM, class_HU, class_HZ, class_UZ, title="Regression Results of Self-Perception of Social Class",
+                  align=TRUE, dep.var.labels=c("Han v.s. Minorities","Han v.s. Uyghur", "Han v.s. Zhuang", "Uyghur v.s. Zhuang"),
+                  covariate.labels=c("Occupation_class", "Education", "Income", 
+                                     "Age", "Male", "CCP members", "Urban Hukou", "Local Hukou", "Han", 
+                                     "Uyghur v.s. Han", "Zhuang v.s. Han", "Uyghur v.s. Zhuang"),
                   omit.stat=c("LL","ser","f"), no.space=TRUE)
 
 
