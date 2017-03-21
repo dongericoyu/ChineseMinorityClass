@@ -18,6 +18,7 @@ library(broom)
 library(dplyr)
 library(purrr)
 library(stargazer)
+library(interplot)
 
 #read data into R
 CLDS2014<- read_dta("C:/Users/Dong/Desktop/Ethnic Minority and Public Good-2016/individual_data_for_R.dta")
@@ -191,8 +192,11 @@ table2<-stargazer(prosp_HM_China, prosp_HU_China, prosp_HZ_China,prosp_UZ_China,
 
 #basic model sets 3.Retrospective and Prospective Mobility- ii.	Xinjiang – just Han/Uyghur (Wu & Song 2014 check) iii.	Guangxi – just Zhuang/Han 
 
+#First, sub-sampling
+data_HUZ<- read_dta("C:/Users/Dong/Desktop/Ethnic Minority and Public Good-2016/individual_data_for_R.dta")
+
 #3(1)Han v.s. Uyghur - retros
-retro_HU_XJ <- glm(retro_mobility_1 ~ job_class + edu_1 + income_quantile + age_1 + male_1 + ccp_1 + current_urban_hukou_1 + local_hukou_1 + Uyghur_Han + Xinjiang, data = CLDS2014)
+retro_HU_XJ <- glm(retro_mobility_1 ~ job_class + edu_1 + income_quantile + age_1 + male_1 + ccp_1 + current_urban_hukou_1 + local_hukou_1 + Uyghur + Xinjiang, data = CLDS2014)
 #3(2)Han v.s. Uyghur - prosp
 prosp_HU_XJ <- glm(prosp_mobility_1 ~ job_class + edu_1 + income_quantile + age_1 + male_1 + ccp_1 + current_urban_hukou_1 + local_hukou_1 + Uyghur_Han + Xinjiang, data = CLDS2014)
 
