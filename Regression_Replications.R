@@ -19,6 +19,7 @@ library(dplyr)
 library(purrr)
 library(stargazer)
 library(interplot)
+library(scales)
 
 #read data into R
 CLDS2014<- read_dta("C:/Users/Dong/Desktop/Ethnic Minority and Public Good-2016/individual_data_for_R.dta")
@@ -193,33 +194,94 @@ table2<-stargazer(prosp_HM_China, prosp_HU_China, prosp_HZ_China,prosp_UZ_China,
 #basic model sets 3.Retrospective and Prospective Mobility- ii.	Xinjiang – just Han/Uyghur (Wu & Song 2014 check) iii.	Guangxi – just Zhuang/Han 
 
 #First, sub-sampling
-data_HUZ<- read_dta("C:/Users/Dong/Desktop/Ethnic Minority and Public Good-2016/individual_data_for_R.dta")
+data_HU <- read_dta("C:/Users/Dong/Desktop/Ongoing Project-R/ChineseMinorityClass-MPSA2017/ChineseMinorityClass/individual_data_for_R(HU).dta")
+
+data_HZ <- read_dta("C:/Users/Dong/Desktop/Ongoing Project-R/ChineseMinorityClass-MPSA2017/ChineseMinorityClass/individual_data_for_R(HZ).dta")
 
 #3(1)Han v.s. Uyghur - retros
-retro_HU_XJ <- glm(retro_mobility_1 ~ job_class + edu_1 + income_quantile + age_1 + male_1 + ccp_1 + current_urban_hukou_1 + local_hukou_1 + Uyghur + Xinjiang, data = CLDS2014)
+retro_HU_XJ <- glm(retro_mobility_1 ~ job_class + edu_1 + income_quantile + age_1 + male_1 + ccp_1 + current_urban_hukou_1 + local_hukou_1 + Uyghur*Xinjiang, data = data_HU)
+dwplot(retro_HU_XJ)
+
+interplot(m=retro_HU_XJ, var1="Uyghur", var2 = "Xinjiang") +
+  xlab('Uyghur') +
+  ylab('Estimated Coefficient for Xinjiang') +
+  ggtitle('Estimated Coefficient of Xinjiang on Retrospective Mobility by Race (Uyghur)') +
+  theme(plot.title = element_text(face='bold'))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #3(2)Han v.s. Uyghur - prosp
-prosp_HU_XJ <- glm(prosp_mobility_1 ~ job_class + edu_1 + income_quantile + age_1 + male_1 + ccp_1 + current_urban_hukou_1 + local_hukou_1 + Uyghur_Han + Xinjiang, data = CLDS2014)
+prosp_HU_XJ <- glm(prosp_mobility_1 ~ job_class + edu_1 + income_quantile + age_1 + male_1 + ccp_1 + current_urban_hukou_1 + local_hukou_1 + Uyghur + Xinjiang + Uyghur*Xinjiang, data = data_HU)
+interplot(m=prosp_HU_XJ, var1="Uyghur", var2 = "Xinjiang") +
+  xlab('Uyghur') +
+  ylab('Estimated Coefficient for Xinjiang') +
+  ggtitle('Estimated Coefficient of Xinjiang on Prospective Mobility by Race (Uyghur)') +
+  theme(plot.title = element_text(face='bold'))
 
 
 #3(3)Han v.s. Zhuang - retros
-retro_HZ_GX <- glm(retro_mobility_1 ~ job_class + edu_1 + income_quantile + age_1 + male_1 + ccp_1 + current_urban_hukou_1 + local_hukou_1 + Zhuang_Han + Guangxi, data = CLDS2014)
-#3(4)Han v.s. Zhuang - prosp
-prosp_HZ_GX <- glm(prosp_mobility_1 ~ job_class + edu_1 + income_quantile + age_1 + male_1 + ccp_1 + current_urban_hukou_1 + local_hukou_1 + Zhuang_Han + Guangxi, data = CLDS2014)
+retro_HZ_GX <- glm(retro_mobility_1 ~ job_class + edu_1 + income_quantile + age_1 + male_1 + ccp_1 + current_urban_hukou_1 + local_hukou_1 + Zhuang + Guangxi + Zhuang*Guangxi, data = data_HZ)
+interplot(m=retro_HZ_GX, var1="Zhuang", var2 = "Guangxi") +
+  xlab('Zhuang') +
+  ylab('Estimated Coefficient for Guangxi') +
+  ggtitle('Estimated Coefficient of Guangxi on Retrospective Mobility by Race(Zhuang)') +
+  theme(plot.title = element_text(face='bold'))
 
+#3(4)Han v.s. Zhuang - prosp
+prosp_HZ_GX <- glm(prosp_mobility_1 ~ job_class + edu_1 + income_quantile + age_1 + male_1 + ccp_1 + current_urban_hukou_1 + local_hukou_1 + Zhuang + Guangxi + Zhuang*Guangxi, data = data_HZ)
+interplot(m=prosp_HZ_GX, var1="Zhuang", var2 = "Guangxi") +
+  xlab('Zhuang') +
+  ylab('Estimated Coefficient for Guangxi') +
+  ggtitle('Estimated Coefficient of Guangxi on Retrospective Mobility by Race(Zhuang)') +
+  theme(plot.title = element_text(face='bold'))
 
 #plotting the  coefficients of model
+set3_group_1<-dwplot(retro_HU_XJ)
 
 #groupped IVS 
 # Define order for predictors that can be grouped
-reordered_vars_set3<- c("job_class", "edu_1", "income_quantile", "age_1", "male_1", "ccp_1", "current_urban_hukou_1",
-                        "local_hukou_1","Uyghur_Han", "Xinjiang","Zhuang_Han","Guangxi" )
+reordered_vars_set3(1)<- c("job_class", "edu_1", "income_quantile", "age_1", "male_1", "ccp_1", "current_urban_hukou_1",
+                        "local_hukou_1","Uyghur_Han", "Xinjiang","Uyghur*Xinjiang")
+
+
 
 
 # Generate a tidy data frame
-mset3_df <- rbind(tidy(retro_HU_XJ) %>% mutate(model = "retro_HU_XJ"),      # tidy results &
-                  tidy(prosp_HU_XJ) %>% mutate(model = "prosp_HU_XJ"),      # add a variable to
-                  tidy(retro_HZ_GX) %>% mutate(model = "retro_HZ_GX"),
-                  tidy(prosp_HZ_GX) %>% mutate(model = "prosp_HZ_GX")) %>%  # identify model.
+mset3_df_1<- rbind(tidy(retro_HU_XJ) %>% mutate(model = "retro_HU_XJ"),      # tidy results &
+                  tidy(prosp_HU_XJ) %>% mutate(model = "prosp_HU_XJ")) %>%  # identify model.
   by_2sd(mtcars) %>%                                        # rescale coefficients
   mutate(term = factor(term, levels = reordered_vars_set3)) %>%  # make term a factor &
   group_by(model) %>% arrange(term) %>%                     # reorder
@@ -233,35 +295,34 @@ mset3_df <- rbind(tidy(retro_HU_XJ) %>% mutate(model = "retro_HU_XJ"),      # ti
                        local_hukou_1 = "Local Hukou",
                        Uyghur_Han = "Uyghur v.s. Han",
                        Xinjiang = "Xinjiang",
-                       Zhuang_Han = "Zhuang v.s. Han",
-                       Guangxi = "Guangxi"))
+                       Uyghur*Xinjiang = "Uyghur*Xinjiang"))
 
-mset3_df
+mset3_df_1
 
 
 # Save finalized plot to an object 
-set3_group<-dwplot(mset3_df, dodge_soze = 1) + 
+set3_group_1<-dwplot(mset3_df_1, dodge_soze = 1) + 
   relabel_y_axis(c("Occupation_class", "Education", "Income", 
                    "Age", "Male", "CCP members", "Urban Hukou", "Local Hukou",
-                   "Uyghur v.s. Han", "Xinjiang", "Zhuang v.s. Han", "Guangxi")) +
+                   "Uyghur v.s. Han", "Xinjiang","Uyghur*Xinjiang" )) +
   theme_bw() + xlab("Coefficient Estimate") + ylab("") +
   geom_vline(xintercept = 0, colour = "grey60", linetype = 2) +
-  ggtitle("Figure 3. Uyghur and Zhuang comparing to Han, with Regional Control") +
+  ggtitle("Figure 3. Uyghur comparing to Han, with Regional Control") +
   theme(plot.title = element_text(face="bold"),
         legend.justification=c(0, 0),
         legend.background = element_rect(colour="grey80"),
         legend.title = element_blank()) 
 
 # Create list of brackets (label, topmost included predictor, bottommost included predictor)
-four_brackets_set3 <- list( c("SES", "Occupation_class", "Income"), 
+four_brackets_set3_1 <- list( c("SES", "Occupation_class", "Income"), 
                             c("Demographics", "Age", "CCP members"),
                             c("Hukou Status", "Urban Hukou", "Local Hukou"),
-                            c("Ethnicity and Region", "Uyghur v.s. Han", "Guangxi"))
+                            c("Ethnicity and Region", "Uyghur v.s. Han", "Uyghur*Xinjiang"))
 
-set3_gplot <- set3_group %>% add_brackets(four_brackets_set3)
+set3_gplot_1 <- set3_group_1 %>% add_brackets(four_brackets_set3_1)
 
 # to save to file (not run)
-grid.arrange(set3_gplot)    # to display
+grid.arrange(set3_gplot_1)    # to display
 
 #creating table
 table3<-stargazer(retro_HU_XJ, prosp_HU_XJ, retro_HZ_GX, prosp_HZ_GX, title="Regression Results of Uyghur and Zhuang comparing to Han",
@@ -349,5 +410,21 @@ table4<-stargazer(class_HM, class_HU, class_HZ, class_UZ, title="Regression Resu
                                      "Age", "Male", "CCP members", "Urban Hukou", "Local Hukou", "Han", 
                                      "Uyghur v.s. Han", "Zhuang v.s. Han", "Uyghur v.s. Zhuang"),
                   omit.stat=c("LL","ser","f"), no.space=TRUE)
+
+
+
+
+#Plotting Histogram on Class/Mobility and Race
+
+#First, sub-sampling
+Han <- read_dta("C:/Users/Dong/Desktop/Ongoing Project-R/ChineseMinorityClass-MPSA2017/Han.dta")
+minority <- read_dta("C:/Users/Dong/Desktop/Ongoing Project-R/ChineseMinorityClass-MPSA2017/minority.dta")
+Uyghur <- read_dta("C:/Users/Dong/Desktop/Ongoing Project-R/ChineseMinorityClass-MPSA2017/Uyghur.dta")
+Zhuang <- read_dta("C:/Users/Dong/Desktop/Ongoing Project-R/ChineseMinorityClass-MPSA2017/Zhuang.dta")
+
+
+ggplot(CLDS2014, aes(x=current_class_1)) + 
+  geom_bar(aes(y = ...., fill = factor(..x..)))
+  
 
 
