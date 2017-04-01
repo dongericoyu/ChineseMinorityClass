@@ -1,0 +1,129 @@
+\documentclass[12pt]{article}
+\usepackage{fullpage}
+
+\usepackage{graphicx}        % Enable graphics commands
+\usepackage{lscape}		% Enable landscape with \begin{landscape} until \end{landscape}
+\usepackage{natbib}			% Enable citation commands \citep{}, \citet{}, etc.
+\bibpunct{(}{)}{;}{a}{}{,}		% Formatting for in-text citations
+\usepackage{setspace}		% Enable double-spacing with \begin{spacing}{2} until \end{spacing}.
+\usepackage[utf8]{inputenc} 	% Enable utf8 characters, i.e., accents without coding--just type them in.
+\usepackage[english]{babel}	% English hyphenation and alphabetization.  Other languages available.
+\usepackage{dcolumn}        % For decimal-aligned stargazer output.
+\usepackage[colorlinks=true, urlcolor=blue, citecolor=black, linkcolor=black]{hyperref} % Include hyperlinks with the \url and \href commands.
+\setlength{\tabcolsep}{1pt}	% Make tables slightly narrower by reducing space between columns.
+
+\renewcommand\floatpagefraction{.9}	% These commands allow larger tables and graphics to fit
+\renewcommand\topfraction{.9}		% on a page when default settings would complain.
+\renewcommand\bottomfraction{.9}
+\renewcommand\textfraction{.1}
+\setcounter{totalnumber}{50}
+\setcounter{topnumber}{50}
+\setcounter{bottomnumber}{50}
+
+\newcommand{\R}{\textsf{R}~}        %This creates the command \R to typeset the name R correctly.
+
+%\usepackage[left=1in, right=1in]{geometry}	%Turn footnotes into endnotes (commented out).
+%\renewcommand{\footnotesize}{\normalsize}	
+%\usepackage{endnotes}
+%\renewcommand{\footnote}{\endnote}
+%\renewcommand{\section}{\subsection}
+
+\usepackage{Sweave}
+\begin{document}
+\input{table2-0331-concordance}
+
+\pagestyle{empty}
+
+\begin{center}
+{\Large \textbf{Appendix 2. Regression Coefficient Table}}
+\end{center}
+
+
+\begin{table}[!htbp] \centering 
+  \caption{Regression Results of Self-Perception of Social Class} 
+  \label{} 
+\begin{tabular}{@{\extracolsep{5pt}}lD{.}{.}{-3} D{.}{.}{-3} D{.}{.}{-3} D{.}{.}{-3} } 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+ & \multicolumn{4}{c}{\textit{Dependent variable: Self Perception of Social Class}} \\ 
+\cline{2-5} 
+\\[-1.8ex] & \multicolumn{1}{c}{Class Model 1} & \multicolumn{1}{c}{Class Model 2} & \multicolumn{1}{c}{Class Model 3} & \multicolumn{1}{c}{Class Model 4}\\ 
+
+\hline \\[-1.8ex] 
+ Occupation_class & 0.033^{**} & 0.028^{**} & 0.033^{**} & 0.071 \\ 
+  & (0.014) & (0.014) & (0.014) & (0.068) \\ 
+  Education & 0.047^{***} & 0.050^{***} & 0.051^{***} & -0.070 \\ 
+  & (0.010) & (0.010) & (0.010) & (0.051) \\ 
+  Income & 0.187^{***} & 0.195^{***} & 0.202^{***} & 0.212^{***} \\ 
+  & (0.016) & (0.017) & (0.017) & (0.079) \\ 
+  Age & 0.007^{***} & 0.007^{***} & 0.008^{***} & 0.017^{***} \\ 
+  & (0.001) & (0.001) & (0.001) & (0.006) \\ 
+  Male & -0.204^{***} & -0.229^{***} & -0.246^{***} & -0.062 \\ 
+  & (0.030) & (0.032) & (0.031) & (0.141) \\ 
+  CCP members & 0.290^{***} & 0.283^{***} & 0.306^{***} & 0.250 \\ 
+  & (0.054) & (0.057) & (0.057) & (0.250) \\ 
+  Urban Hukou & 0.092^{**} & 0.072 & 0.061 & -0.614^{**} \\ 
+  & (0.044) & (0.045) & (0.045) & (0.307) \\ 
+  Local Hukou & 0.237^{***} & 0.245^{***} & 0.261^{***} & 0.019 \\ 
+  & (0.041) & (0.043) & (0.043) & (0.222) \\ 
+  Han & -0.125^{***} &  &  &  \\ 
+  & (0.044) &  &  &  \\ 
+  Uyghur v.s. Han &  & 0.634^{***} &  &  \\ 
+  &  & (0.129) &  &  \\ 
+  Zhuang v.s. Han &  &  & -0.056 &  \\ 
+  &  &  & (0.083) &  \\ 
+  Uyghur v.s. Zhuang &  &  &  & 1.139^{***} \\ 
+  &  &  &  & (0.182) \\ 
+  Constant & 3.470^{***} & 3.327^{***} & 3.252^{***} & 3.164^{***} \\ 
+  & (0.093) & (0.096) & (0.096) & (0.438) \\ 
+ \hline \\[-1.8ex] 
+Observations & \multicolumn{1}{c}{13,159} & \multicolumn{1}{c}{11,735} & \multicolumn{1}{c}{11,985} & \multicolumn{1}{c}{582} \\ 
+Akaike Inf. Crit. & \multicolumn{1}{c}{50,306.900} & \multicolumn{1}{c}{44,991.050} & \multicolumn{1}{c}{45,938.080} & \multicolumn{1}{c}{2,228.460} \\ 
+\hline 
+\hline \\[-1.8ex] 
+\textit{Note:}  & \multicolumn{4}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
+\end{tabular} 
+\end{table}
+
+\pagebreak
+\begin{table}[!htbp] \centering 
+  \caption{Regression Results of Controlling Region} 
+  \label{} 
+\begin{tabular}{@{\extracolsep{5pt}}lD{.}{.}{-3} D{.}{.}{-3} D{.}{.}{-3} D{.}{.}{-3} } 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+ & \multicolumn{4}{c}{\textit{Dependent variable:}} \\ 
+\cline{2-5} 
+\\[-1.8ex] & \multicolumn{1}{c}{Han.Uyghur(retro)} & \multicolumn{1}{c}{Han.Zhuang(retro)} & \multicolumn{1}{c}{Han.Uyghur(prosp)} & \multicolumn{1}{c}{Han.Zhuang(prosp)}\\ 
+\hline \\[-1.8ex] 
+ Occupation_class & -0.024 & -0.077 & 0.012 & 0.089 \\ 
+  & (0.061) & (0.064) & (0.066) & (0.061) \\ 
+  Education & -0.054 & 0.060 & 0.018 & -0.081 \\ 
+  & (0.041) & (0.057) & (0.045) & (0.055) \\ 
+  Income & -0.002 & 0.082 & -0.038 & -0.137^{**} \\ 
+  & (0.084) & (0.069) & (0.091) & (0.066) \\ 
+  Age & -0.008 & 0.006 & -0.004 & -0.021^{***} \\ 
+  & (0.008) & (0.005) & (0.009) & (0.005) \\ 
+  Male & -0.206 & 0.073 & -0.065 & 0.364^{***} \\ 
+  & (0.163) & (0.120) & (0.177) & (0.115) \\ 
+  CCP members & 0.213 & 0.111 & 0.225 & 0.018 \\ 
+  & (0.197) & (0.269) & (0.214) & (0.257) \\ 
+  Urban Hukou & -0.429^{*} & -0.373 & 0.164 & 0.118 \\ 
+  & (0.240) & (0.336) & (0.260) & (0.320) \\ 
+  Local Hukou & -0.228 & 0.646^{*} & 0.399^{**} & -0.132 \\ 
+  & (0.164) & (0.331) & (0.177) & (0.316) \\ 
+  Han & 0.293^{*} & -0.211 & -0.425^{**} & -0.0003 \\ 
+  & (0.177) & (0.132) & (0.192) & (0.126) \\ 
+  Constant & 1.468^{***} & -0.665 & 1.166^{***} & 2.112^{***} \\ 
+  & (0.408) & (0.476) & (0.442) & (0.454) \\ 
+ \hline \\[-1.8ex] 
+Observations & \multicolumn{1}{c}{290} & \multicolumn{1}{c}{537} & \multicolumn{1}{c}{290} & \multicolumn{1}{c}{537} \\ 
+Akaike Inf. Crit. & \multicolumn{1}{c}{957.078} & \multicolumn{1}{c}{1,840.269} & \multicolumn{1}{c}{1,002.948} & \multicolumn{1}{c}{1,789.595} \\ 
+\hline 
+\hline \\[-1.8ex] 
+\textit{Note:}  & \multicolumn{4}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
+\end{tabular} 
+\end{table} 
+
+
+\end{document}
